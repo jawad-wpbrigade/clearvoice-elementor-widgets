@@ -211,7 +211,7 @@ class  Clearvoice_Hdi_Widget extends \Elementor\Widget_Base {
 			$this->add_link_attributes( 'URL', $settings['URL'] );
 		}
 		?>
-		<div <?php echo $this->get_render_attribute_string( 'URL' ); ?>><?php echo $settings['URL']['url']; ?></div>
+		<div><a <?php echo $this->get_render_attribute_string( 'URL' ); ?>><?php echo $settings['URL']['url']; ?></a></div>
 		<div <?php echo $this->get_render_attribute_string( 'image' ); ?>><?php echo wp_get_attachment_image( $settings['image']['id'], 'medium' ); ?></div>
 		<?php
 
