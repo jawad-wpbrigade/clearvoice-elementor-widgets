@@ -13,7 +13,7 @@
  */
 namespace ClearVoice\ElementorWidgets;
 
-use ClearVoice\ElementorWidgets\Widgets\Nav_Menu;
+use ClearVoice\ElementorWidgets\Widgets as clv_widgets;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit; // Exit if accessed directly.
@@ -55,7 +55,7 @@ final class ClearVoiceElementorWidgets {
 		require_once( __DIR__ . '/widgets/clv-hdi-widget.php' );
 
         // Register widget with elementor.
-        $widgets_manager->register( new \ClearVoice\ElementorWidgets\Widgets\Clearvoice_Hdi_Widget() );
+        $widgets_manager->register( new clv_widgets\Clearvoice_Hdi_Widget() );
 
     }
 
