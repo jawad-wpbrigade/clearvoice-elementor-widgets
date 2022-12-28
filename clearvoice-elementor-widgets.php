@@ -69,16 +69,24 @@ final class ClearVoiceElementorWidgets {
 
     }
 
-    public function create_new_category( $elements_manager ) {
+	/**
+	 * Create new category and show it on top of all categories in elementor.
+	 */
+	public function create_new_category( $elements_manager ) {
 
-        $elements_manager->add_category(
-            'clearvoice',
-            [
-                'title' => __( 'ClearVoice', 'ClearVoice-elementor-widgets' ),
-                'icon'  => 'fa fa-plug'
-            ]
-        );
+		$clv_categories = array();
+		$clv_categories['clearvoice'] = array(
+			'title' => __( 'ClearVoice', 'ClearVoice-elementor-widgets' ),
+			'icon'  => 'fa fa-plug',
+		);
+		// Get our category to the top.
+		$old_categories = $elements_manager->get_categories();
+		$clv_categories = array_merge( $clv_categories, $old_categories );
+		$set_categories = function ( $clv_categories ) {
+			$this->categories = $clv_categories;
+		};
 
+		$set_categories->call( $elements_manager, $clv_categories );
     }
 
 }
