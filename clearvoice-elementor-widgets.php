@@ -53,9 +53,11 @@ final class ClearVoiceElementorWidgets {
 
         // Require the widget class.
 		require_once( __DIR__ . '/widgets/clv-hdi-widget.php' );
+		require_once( __DIR__ . '/widgets/clv-custom-posts-widget.php' );
 
         // Register widget with elementor.
         $widgets_manager->register( new clv_widgets\Clearvoice_Hdi_Widget() );
+        $widgets_manager->register( new clv_widgets\Clearvoice_Custom_Posts() );
 
     }
 
