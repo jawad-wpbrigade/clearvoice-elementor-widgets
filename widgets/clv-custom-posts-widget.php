@@ -36,7 +36,7 @@ class  Clearvoice_Custom_Posts extends \Elementor\Widget_Base {
 	 * @return string Widget title.
 	 */
 	public function get_title() {
-		return esc_html__( 'ClearVoice Custom Posts', 'clearvoice-elementor-addon' );
+		return esc_html__( 'ClearVoice Custom Posts', 'ClearVoice-elementor-widgets' );
 	}
 
 	/**
@@ -78,26 +78,28 @@ class  Clearvoice_Custom_Posts extends \Elementor\Widget_Base {
 		$this->start_controls_section(
 			'content_section',
 			array(
-				'label' => esc_html__( 'Content', 'clearvoice-elementor-addon' ),
+				'label' => esc_html__( 'Content', 'ClearVoice-elementor-widgets' ),
 				'tab' => \Elementor\Controls_Manager::TAB_CONTENT,
 			)
 		);
 
+		/**
+		 * Let's get all the cats and store them in $options array.
+		 */
 		$options = array();
-
 		$args = array(
     		'hide_empty' => false,
 		);
-
 		$categories = get_categories($args);
-
-		foreach ( $categories as $key => $category ) {
-    		$options[$category->name] = $category->name;
+		if( isset( $categories ) && is_array( $categories ) ) {
+			foreach ( $categories as $key => $category ) {
+				$options[ $category->name ] = $category->name;
+			}
 		}
         $this->add_control(
 			'clv_categories',
 			array(
-				'label' => esc_html__( 'Show Posts', 'clearvoice-elementor-addon' ),
+				'label' => esc_html__( 'Select Categories', 'ClearVoice-elementor-widgets' ),
 				'type' => \Elementor\Controls_Manager::SELECT2,
 				'label_block' => true,
 				'multiple' => true,
@@ -107,7 +109,7 @@ class  Clearvoice_Custom_Posts extends \Elementor\Widget_Base {
 		$this->add_control(
 			'clv_posts_per_page',
 			[
-				'label' => esc_html__( 'Posts Per Page', 'elementor-pro' ),
+				'label' => esc_html__( 'Posts Per Page', 'ClearVoice-elementor-widgets' ),
 				'type' => \Elementor\Controls_Manager::NUMBER,
 				'min' => -1,
 			]
@@ -115,8 +117,16 @@ class  Clearvoice_Custom_Posts extends \Elementor\Widget_Base {
 		$this->add_control(
 			'clv_hide_posts',
 			[
-				'label' => esc_html__( 'Hide Posts', 'clearvoice-elementor-addon' ),
+				'label' => esc_html__( 'Hide Posts', 'ClearVoice-elementor-widgets' ),
 				'type' => \Elementor\Controls_Manager::TEXT,
+			]
+		);
+		$this->add_control(
+			'clv_hide_posts_description',
+			[
+				'raw' => esc_html__( " Enter the comma separated post id's that you want to hide like : 23,43 ", 'elementor' ),
+				'type' => \Elementor\Controls_Manager::RAW_HTML,
+				'content_classes' => 'elementor-descriptor',
 			]
 		);
 
