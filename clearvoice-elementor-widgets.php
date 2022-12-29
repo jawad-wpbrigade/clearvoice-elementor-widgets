@@ -58,7 +58,7 @@ final class ClearVoiceElementorWidgets {
 
         // Register widget with elementor.
         $widgets_manager->register( new Clearvoice_Hdi_Widget() );
-        $widgets_manager->register( new clv_widgets\Clearvoice_Custom_Posts() );
+        $widgets_manager->register( new Clearvoice_Custom_Posts() );
 
 
     }
