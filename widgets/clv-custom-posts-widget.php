@@ -1,0 +1,171 @@
+<?php
+namespace ClearVoice\ElementorWidgets\Widgets;
+if ( ! defined( 'ABSPATH' ) ) {
+	exit; // Exit if accessed directly.
+}
+
+/**
+ * Clearvoice Custom Posts
+ *
+ * This Widget will get posts from categories.
+ *
+ * @since 1.0.0
+ */
+class  Clearvoice_Custom_Posts extends \Elementor\Widget_Base {
+
+	/**
+	 * Get widget name.
+	 *
+	 * Retrieve oEmbed widget name.
+	 *
+	 * @since 1.0.0
+	 * @access public
+	 * @return string Widget name.
+	 */
+	public function get_name() {
+		return 'clearvoice-custom-posts';
+	}
+
+	/**
+	 * Get widget title.
+	 *
+	 * Retrieve oEmbed widget title.
+	 *
+	 * @since 1.0.0
+	 * @access public
+	 * @return string Widget title.
+	 */
+	public function get_title() {
+		return esc_html__( 'ClearVoice Custom Posts', 'clearvoice-elementor-addon' );
+	}
+
+	/**
+	 * Get widget icon.
+	 *
+	 * Retrieve oEmbed widget icon.
+	 *
+	 * @since 1.0.0
+	 * @access public
+	 * @return string Widget icon.
+	 */
+	public function get_icon() {
+		return 'eicon-posts-carousel';
+	}
+
+	/**
+	 * Get widget categories.
+	 *
+	 * Retrieve the list of categories the HDI widget belongs to.
+	 *
+	 * @since 1.0.0
+	 * @access public
+	 * @return array Widget categories.
+	 */
+	public function get_categories() {
+		return [ 'clearvoice' ];
+	}
+
+	/**
+	 * Register HDI widget controls.
+	 *
+	 * Add input fields to allow the user to customize the widget settings.
+	 *
+	 * @since 1.0.0
+	 * @access protected
+	 */
+	protected function register_controls() {
+
+		$this->start_controls_section(
+			'content_section',
+			array(
+				'label' => esc_html__( 'Content', 'clearvoice-elementor-addon' ),
+				'tab' => \Elementor\Controls_Manager::TAB_CONTENT,
+			)
+		);
+
+		$options = array();
+
+		$args = array(
+    		'hide_empty' => false,
+		);
+
+		$categories = get_categories($args);
+
+		foreach ( $categories as $key => $category ) {
+    		$options[$category->name] = $category->name;
+		}
+        $this->add_control(
+			'clv_categories',
+			array(
+				'label' => esc_html__( 'Show Posts', 'clearvoice-elementor-addon' ),
+				'type' => \Elementor\Controls_Manager::SELECT2,
+				'label_block' => true,
+				'multiple' => true,
+				'options' =>  $options,
+			)
+		);
+		$this->add_control(
+			'clv_posts_per_page',
+			[
+				'label' => esc_html__( 'Posts Per Page', 'elementor-pro' ),
+				'type' => \Elementor\Controls_Manager::NUMBER,
+				'min' => -1,
+			]
+		);
+		$this->add_control(
+			'clv_hide_posts',
+			[
+				'label' => esc_html__( 'Hide Posts', 'clearvoice-elementor-addon' ),
+				'type' => \Elementor\Controls_Manager::TEXT,
+			]
+		);
+
+		$this->end_controls_section();
+
+	}
+
+	/**
+	 * Render clearvoice hdi widget output on the frontend.
+	 *
+	 * Written in PHP and used to generate the final HTML.
+	 *
+	 * @since 1.0.0
+	 * @access protected
+	 */
+	protected function render() {
+		$settings          = $this->get_settings_for_display();
+		$clv_post_per_page = $settings['clv_posts_per_page'];
+		$clv_categories    = $settings['clv_categories'];
+		$clv_hide_posts    = explode( ',' , $settings['clv_hide_posts'] );
+
+		// Let's do the query magic now.
+		$args = array(
+			'post_type' => 'any',
+			'tax_query' => array(
+				array(
+					'taxonomy' => 'category',
+					'field'    => 'slug',
+					'terms'    => $clv_categories,
+				)
+			),
+			'post__not_in'   => $clv_hide_posts,
+			'posts_per_page' => $clv_post_per_page,
+			'order'          => 'ASC',
+		);
+
+		$query = new \WP_Query($args);
+		if ( $query->have_posts() ) {
+			while( $query->have_posts() ) {
+				$query->the_post(); 
+				?>
+				<div style = "max-wdith: 50px">
+				<div><?php echo get_the_post_thumbnail( get_the_ID(), array( 200, 200) ) ?></div>
+				<p><a href="<?php the_permalink(); ?>"><?php the_title(); ?></a></p>
+				</div>
+				<?php
+			}
+		}
+		// Reset Query.
+        wp_reset_query() ;
+	}
+}
