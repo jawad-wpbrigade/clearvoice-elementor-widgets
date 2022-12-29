@@ -6,14 +6,11 @@
  * Version:     1.0.0
  * Author:      Jawad
  * Author URI:  https://developers.elementor.com/
- * Text Domain: clearvoice-elementor-addon
+ * Text Domain: ClearVoice-elementor-widgets
  *
  * Elementor tested up to: 3.9.2
  * Elementor Pro tested up to: 3.9.2
  */
-namespace ClearVoice\ElementorWidgets;
-
-use ClearVoice\ElementorWidgets\Widgets as clv_widgets;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit; // Exit if accessed directly.
@@ -38,17 +35,21 @@ final class ClearVoiceElementorWidgets {
         load_plugin_textdomain( 'ClearVoice-elementor-widgets' );
     }
 
-    public function init_plugin() {
-        // Check php version
-        // check if elementor is installed
-        // bring in the widget classes
-        // bring in the controls
-    }
+    /**
+     * Will do the logic here later
+     * Most probably will show notices
+     * if elementor plugin is not installed
+    */
+    public function init_plugin() {}
 
-    public function init_controls() {
-        
-    }
+	/**
+	 * Will write custom controls here
+	 */
+    public function init_controls() {}
 
+	/**
+	 * Start Registering Widgets
+	 */
     public function init_widgets( $widgets_manager ) {
 
         // Require the widget class.
@@ -56,8 +57,9 @@ final class ClearVoiceElementorWidgets {
 		require_once( __DIR__ . '/widgets/clv-custom-posts-widget.php' );
 
         // Register widget with elementor.
-        $widgets_manager->register( new clv_widgets\Clearvoice_Hdi_Widget() );
+        $widgets_manager->register( new Clearvoice_Hdi_Widget() );
         $widgets_manager->register( new clv_widgets\Clearvoice_Custom_Posts() );
+
 
     }
 
